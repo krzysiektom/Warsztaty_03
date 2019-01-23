@@ -104,13 +104,7 @@ public class User {
         preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            User loadedUser = new User();
-            loadedUser.id = resultSet.getLong("id");
-            loadedUser.username = resultSet.getString("username");
-            loadedUser.password = resultSet.getString("password");
-            loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
-            return loadedUser;
+            return getUserFromResultSet(conn,resultSet);
         }
         return null;
     }
@@ -121,13 +115,7 @@ public class User {
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            User loadedUser = new User();
-            loadedUser.id = resultSet.getLong("id");
-            loadedUser.username = resultSet.getString("username");
-            loadedUser.password = resultSet.getString("password");
-            loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
-            users.add(loadedUser);
+            users.add(getUserFromResultSet(conn,resultSet));
         }
         return users;
     }
@@ -149,16 +137,18 @@ public class User {
         preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            User loadedUser = new User();
-            loadedUser.id = resultSet.getLong("id");
-            loadedUser.username = resultSet.getString("username");
-            loadedUser.password = resultSet.getString("password");
-            loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
-            users.add(loadedUser);
+            users.add(getUserFromResultSet(conn,resultSet));
         }
-
         return users;
     }
 
+    static private User getUserFromResultSet(Connection conn, ResultSet resultSet) throws SQLException {
+        User loadedUser = new User();
+        loadedUser.id = resultSet.getInt("id");
+        loadedUser.username = resultSet.getString("username");
+        loadedUser.password = resultSet.getString("password");
+        loadedUser.email = resultSet.getString("email");
+        loadedUser.userGroup = UserGroup.loadUserGroupById(conn, resultSet.getInt("usergroup_id"));
+        return loadedUser;
+    }
 }

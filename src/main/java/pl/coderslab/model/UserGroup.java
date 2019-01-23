@@ -46,7 +46,6 @@ public class UserGroup {
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setString(1, this.name);
             preparedStatement.setInt(2, this.id);
-
             preparedStatement.executeUpdate();
         }
     }
@@ -57,24 +56,18 @@ public class UserGroup {
         preparedStatement.setInt(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            UserGroup loadedUserGroup = new UserGroup();
-            loadedUserGroup.id = resultSet.getInt("id");
-            loadedUserGroup.name = resultSet.getString("name");
-            return loadedUserGroup;
+            return getUserGroupFromResultSet(conn, resultSet);
         }
         return null;
     }
 
-    static public List<UserGroup>  loadAllUserGroups(Connection conn) throws SQLException {
+    static public List<UserGroup> loadAllUserGroups(Connection conn) throws SQLException {
         List<UserGroup> userGroups = new ArrayList<UserGroup>();
         String sql = "SELECT * FROM userGroups";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            UserGroup loadedUserGroup = new UserGroup();
-            loadedUserGroup.id = resultSet.getInt("id");
-            loadedUserGroup.name = resultSet.getString("name");
-            userGroups.add(loadedUserGroup);
+            userGroups.add(getUserGroupFromResultSet(conn, resultSet));
         }
         return userGroups;
     }
@@ -87,6 +80,13 @@ public class UserGroup {
             preparedStatement.executeUpdate();
             this.id = 0;
         }
+    }
+
+    private static UserGroup getUserGroupFromResultSet(Connection conn, ResultSet resultSet) throws SQLException {
+        UserGroup loadedUserGroup = new UserGroup();
+        loadedUserGroup.id = resultSet.getInt("id");
+        loadedUserGroup.name = resultSet.getString("name");
+        return loadedUserGroup;
     }
 
     @Override
