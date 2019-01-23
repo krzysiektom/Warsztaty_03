@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class UserGroup {
     private int id;
@@ -64,8 +65,8 @@ public class UserGroup {
         return null;
     }
 
-    static public UserGroup[] loadAllUserGroups(Connection conn) throws SQLException {
-        ArrayList<UserGroup> userGroups = new ArrayList<UserGroup>();
+    static public List<UserGroup>  loadAllUserGroups(Connection conn) throws SQLException {
+        List<UserGroup> userGroups = new ArrayList<UserGroup>();
         String sql = "SELECT * FROM userGroups";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -75,9 +76,7 @@ public class UserGroup {
             loadedUserGroup.name = resultSet.getString("name");
             userGroups.add(loadedUserGroup);
         }
-        UserGroup[] uArray = new UserGroup[userGroups.size()];
-        uArray = userGroups.toArray(uArray);
-        return uArray;
+        return userGroups;
     }
 
     public void delete(Connection conn) throws SQLException {

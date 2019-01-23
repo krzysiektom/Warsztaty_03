@@ -7,13 +7,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class User {
     private long id;
     private String username;
     private String email;
     private String password;
-    private int userGroup_id;
+    private UserGroup userGroup;
 
     public User(String username, String email, String password) {
         this.username = username;
@@ -40,8 +41,8 @@ public class User {
         return password;
     }
 
-    public int getUserGroup_id() {
-        return userGroup_id;
+    public UserGroup getUserGroup() {
+        return userGroup;
     }
 
     public void setUsername(String username) {
@@ -52,8 +53,8 @@ public class User {
         this.email = email;
     }
 
-    public void setUserGroup_id(int userGroup_id) {
-        this.userGroup_id = userGroup_id;
+    public void setUserGroup(UserGroup userGroup) {
+        this.userGroup = userGroup;
     }
 
     public void setPassword(String password) {
@@ -67,7 +68,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", userGroup_id=" + userGroup_id +
+                ", userGroup=" + userGroup.toString() +
                 '}';
     }
 
@@ -79,7 +80,7 @@ public class User {
             preparedStatement.setString(1, this.username);
             preparedStatement.setString(2, this.email);
             preparedStatement.setString(3, this.password);
-            preparedStatement.setInt(4, this.userGroup_id);
+            preparedStatement.setInt(4, this.userGroup.getId());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
@@ -91,7 +92,7 @@ public class User {
             preparedStatement.setString(1, this.username);
             preparedStatement.setString(2, this.email);
             preparedStatement.setString(3, this.password);
-            preparedStatement.setInt(4, this.userGroup_id);
+            preparedStatement.setInt(4, this.userGroup.getId());
             preparedStatement.setLong(5, this.id);
             preparedStatement.executeUpdate();
         }
@@ -108,14 +109,14 @@ public class User {
             loadedUser.username = resultSet.getString("username");
             loadedUser.password = resultSet.getString("password");
             loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup_id = resultSet.getInt("usergroup_id");
+            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
             return loadedUser;
         }
         return null;
     }
 
-    static public User[] loadAllUsers(Connection conn) throws SQLException {
-        ArrayList<User> users = new ArrayList<User>();
+    static public List<User> loadAllUsers(Connection conn) throws SQLException {
+        ArrayList<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -125,12 +126,10 @@ public class User {
             loadedUser.username = resultSet.getString("username");
             loadedUser.password = resultSet.getString("password");
             loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup_id = resultSet.getInt("usergroup_id");
+            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
             users.add(loadedUser);
         }
-        User[] uArray = new User[users.size()];
-        uArray = users.toArray(uArray);
-        return uArray;
+        return users;
     }
 
     public void delete(Connection conn) throws SQLException {
@@ -143,10 +142,11 @@ public class User {
         }
     }
 
-    static public User[] loadAllByGroupId(Connection conn) throws SQLException {
-        ArrayList<User> users = new ArrayList<User>();
-        String sql = "SELECT * FROM users WHERE ";
+    static public List<User> loadAllByGroupId(Connection conn, int id) throws SQLException {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT * FROM users WHERE userGroup_id = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setLong(1, id);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             User loadedUser = new User();
@@ -154,12 +154,11 @@ public class User {
             loadedUser.username = resultSet.getString("username");
             loadedUser.password = resultSet.getString("password");
             loadedUser.email = resultSet.getString("email");
-            loadedUser.userGroup_id = resultSet.getInt("usergroup_id");
+            loadedUser.userGroup = UserGroup.loadUserGroupById(conn,resultSet.getInt("usergroup_id"));
             users.add(loadedUser);
         }
-        User[] uArray = new User[users.size()];
-        uArray = users.toArray(uArray);
-        return uArray;
+
+        return users;
     }
 
 }
