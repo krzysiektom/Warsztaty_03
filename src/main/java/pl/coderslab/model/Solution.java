@@ -95,10 +95,10 @@ public class Solution {
         }
     }
 
-    static public Solution loadSolutionById(Connection conn, int solution_id) throws SQLException {
+    static public Solution loadSolutionById(Connection conn, int solutionId) throws SQLException {
         String sql = "SELECT * FROM solutions where id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, solution_id);
+        preparedStatement.setInt(1, solutionId);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             return getSolutionFromResultSet(conn, resultSet);
@@ -107,9 +107,21 @@ public class Solution {
     }
 
     static public List<Solution> loadAllsolutions(Connection conn) throws SQLException {
-        ArrayList<Solution> solutions = new ArrayList<>();
+        List<Solution> solutions = new ArrayList<>();
         String sql = "SELECT * FROM solutions";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        while (resultSet.next()) {
+            solutions.add(getSolutionFromResultSet(conn, resultSet));
+        }
+        return solutions;
+    }
+
+    static public List<Solution> loadAllsolutions(Connection conn, int numberSolutions) throws SQLException {
+        List<Solution> solutions = new ArrayList<>();
+        String sql = "SELECT * FROM solutions ORDER BY created DESC LIMIT ?";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+        preparedStatement.setInt(1, numberSolutions);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             solutions.add(getSolutionFromResultSet(conn, resultSet));
@@ -127,11 +139,11 @@ public class Solution {
         }
     }
 
-    static public List<Solution> loadAllByUserId(Connection conn, int user_id) throws SQLException {
+    static public List<Solution> loadAllByUserId(Connection conn, int userId) throws SQLException {
         List<Solution> solutions = new ArrayList<Solution>();
         String sql = "SELECT * FROM solutions WHERE user_id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, user_id);
+        preparedStatement.setInt(1, userId);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             solutions.add(getSolutionFromResultSet(conn, resultSet));
@@ -139,11 +151,11 @@ public class Solution {
         return solutions;
     }
 
-    static public List<Solution> loadAllByExerciseId(Connection conn, int exercise_id) throws SQLException {
+    static public List<Solution> loadAllByExerciseId(Connection conn, int exerciseId) throws SQLException {
         List<Solution> solutions = new ArrayList<Solution>();
         String sql = "SELECT * FROM solutions WHERE exercise_id=? order by created";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, exercise_id);
+        preparedStatement.setInt(1, exerciseId);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             solutions.add(getSolutionFromResultSet(conn, resultSet));

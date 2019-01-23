@@ -73,11 +73,11 @@ public class Exercise {
         return null;
     }
 
-    static public List<Exercise> loadExercisesNotSolvedByUserId(Connection conn, int user_id) throws SQLException {
+    static public List<Exercise> loadExercisesNotSolvedByUserId(Connection conn, int userId) throws SQLException {
         List<Exercise> exercises = new ArrayList<>();
         String sql = "SELECT * from exercises where id not in ((select exercise_id from solutions where user_id=?))";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, user_id);
+        preparedStatement.setInt(1, userId);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             exercises.add(getExerciseFromResultSet(conn, resultSet));
