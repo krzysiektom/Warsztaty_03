@@ -50,10 +50,10 @@ public class UserGroup {
         }
     }
 
-    static public UserGroup loadUserGroupById(Connection conn, int id) throws SQLException {
+    static public UserGroup loadUserGroupById(Connection conn, int userGroup_id) throws SQLException {
         String sql = "SELECT * FROM userGroups where id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setInt(1, userGroup_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             return getUserGroupFromResultSet(conn, resultSet);

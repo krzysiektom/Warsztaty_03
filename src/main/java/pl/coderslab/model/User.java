@@ -98,10 +98,10 @@ public class User {
         }
     }
 
-    static public User loadUserById(Connection conn, long id) throws SQLException {
+    static public User loadUserById(Connection conn, long user_id) throws SQLException {
         String sql = "SELECT * FROM users where id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setLong(1, id);
+        preparedStatement.setLong(1, user_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
             return getUserFromResultSet(conn,resultSet);
@@ -110,7 +110,7 @@ public class User {
     }
 
     static public List<User> loadAllUsers(Connection conn) throws SQLException {
-        ArrayList<User> users = new ArrayList<>();
+        List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
@@ -130,11 +130,11 @@ public class User {
         }
     }
 
-    static public List<User> loadAllByGroupId(Connection conn, int id) throws SQLException {
+    static public List<User> loadAllByGroupId(Connection conn, int userGroup_id) throws SQLException {
         List<User> users = new ArrayList<>();
         String sql = "SELECT * FROM users WHERE userGroup_id = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setLong(1, id);
+        preparedStatement.setLong(1, userGroup_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
             users.add(getUserFromResultSet(conn,resultSet));

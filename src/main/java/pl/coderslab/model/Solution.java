@@ -2,21 +2,22 @@ package pl.coderslab.model;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Solution {
     private int id;
     private Timestamp created;
     private Timestamp updated;
     private String description;
-    private int exercise_id;
-    private int user_id;
+    private Exercise exercise;
+    private User user;
 
-    public Solution(Timestamp created, Timestamp updated, String description, int exercise_id, int user_id) {
+    public Solution(Timestamp created, Timestamp updated, String description, Exercise exercise, User user) {
         this.created = created;
         this.updated = updated;
         this.description = description;
-        this.exercise_id = exercise_id;
-        this.user_id = user_id;
+        this.exercise = exercise;
+        this.user = user;
     }
 
     public Solution() {
@@ -38,12 +39,12 @@ public class Solution {
         return description;
     }
 
-    public int getExercise_id() {
-        return exercise_id;
+    public Exercise getExercise() {
+        return exercise;
     }
 
-    public int getuser_id() {
-        return user_id;
+    public User getuser() {
+        return user;
     }
 
     public void setCreated(Timestamp created) {
@@ -58,83 +59,67 @@ public class Solution {
         this.description = description;
     }
 
-    public void setExercise_id(int exercise_id) {
-        this.exercise_id = exercise_id;
+    public void setExercise(Exercise exercise) {
+        this.exercise = exercise;
     }
 
-    public void setUser_id(int user_id) {
-        this.user_id = user_id;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void saveToDB(Connection conn) throws SQLException {
         if (this.id == 0) {
-            String sql = "INSERT INTO solution(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO solutions(created, updated, description, exercise_id, user_id) VALUES (?, ?, ?, ?, ?)";
             String[] generatedColumns = {"ID"};
             PreparedStatement preparedStatement = conn.prepareStatement(sql, generatedColumns);
             preparedStatement.setTimestamp(1, this.created);
             preparedStatement.setTimestamp(2, this.updated);
             preparedStatement.setString(3, this.description);
-            preparedStatement.setInt(4, this.exercise_id);
-            preparedStatement.setInt(5, this.user_id);
+            preparedStatement.setInt(4, this.exercise.getId());
+            preparedStatement.setLong(5, this.user.getId());
             preparedStatement.executeUpdate();
             ResultSet rs = preparedStatement.getGeneratedKeys();
             if (rs.next()) {
                 this.id = rs.getInt(1);
             }
         } else {
-            String sql = "update solution SET created=?, updated=?, description=? exercise_id=?, user_id=? where id = ?";
+            String sql = "update solutions SET created=?, updated=?, description=? exercise_id=?, user_id=? where id = ?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setTimestamp(1, this.created);
             preparedStatement.setTimestamp(2, this.updated);
             preparedStatement.setString(3, this.description);
-            preparedStatement.setInt(4, this.exercise_id);
-            preparedStatement.setInt(5, this.user_id);
+            preparedStatement.setInt(4, this.exercise.getId());
+            preparedStatement.setLong(5, this.user.getId());
             preparedStatement.setInt(6, this.id);
             preparedStatement.executeUpdate();
         }
     }
 
-    static public Solution loadSolutionById(Connection conn, int id) throws SQLException {
-        String sql = "SELECT * FROM solution where id=?";
+    static public Solution loadSolutionById(Connection conn, int solution_id) throws SQLException {
+        String sql = "SELECT * FROM solutions where id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setInt(1, solution_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         if (resultSet.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = resultSet.getInt("id");
-            loadedSolution.created = resultSet.getTimestamp("created");
-            loadedSolution.updated = resultSet.getTimestamp("updated");
-            loadedSolution.description = resultSet.getString("description");
-            loadedSolution.exercise_id = resultSet.getInt("exercise_id");
-            loadedSolution.user_id = resultSet.getInt("user_id");
-            return loadedSolution;
+            return getSolutionFromResultSet(conn, resultSet);
         }
         return null;
     }
 
-    static public Solution[] loadAllsolution(Connection conn) throws SQLException {
-        ArrayList<Solution> solution = new ArrayList<Solution>();
-        String sql = "SELECT * FROM solution";
+    static public List<Solution> loadAllsolutions(Connection conn) throws SQLException {
+        ArrayList<Solution> solutions = new ArrayList<>();
+        String sql = "SELECT * FROM solutions";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = resultSet.getInt("id");
-            loadedSolution.created = resultSet.getTimestamp("created");
-            loadedSolution.updated = resultSet.getTimestamp("updated");
-            loadedSolution.description = resultSet.getString("description");
-            loadedSolution.exercise_id = resultSet.getInt("exercise_id");
-            loadedSolution.user_id = resultSet.getInt("user_id");
-            solution.add(loadedSolution);
+            solutions.add(getSolutionFromResultSet(conn, resultSet));
         }
-        Solution[] uArray = new Solution[solution.size()];
-        uArray = solution.toArray(uArray);
-        return uArray;
+        return solutions;
     }
 
     public void delete(Connection conn) throws SQLException {
         if (this.id != 0) {
-            String sql = "DELETE FROM solution WHERE id=?";
+            String sql = "DELETE FROM solutions WHERE id=?";
             PreparedStatement preparedStatement = conn.prepareStatement(sql);
             preparedStatement.setInt(1, this.id);
             preparedStatement.executeUpdate();
@@ -142,46 +127,39 @@ public class Solution {
         }
     }
 
-    static public Solution[] loadAllByUserId(Connection conn, int id) throws SQLException {
-        ArrayList<Solution> solution = new ArrayList<Solution>();
-        String sql = "SELECT * FROM solution WHERE user_id=?";
+    static public List<Solution> loadAllByUserId(Connection conn, int user_id) throws SQLException {
+        List<Solution> solutions = new ArrayList<Solution>();
+        String sql = "SELECT * FROM solutions WHERE user_id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setInt(1, user_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = resultSet.getInt("id");
-            loadedSolution.created = resultSet.getTimestamp("created");
-            loadedSolution.updated = resultSet.getTimestamp("updated");
-            loadedSolution.description = resultSet.getString("description");
-            loadedSolution.exercise_id = resultSet.getInt("exercise_id");
-            loadedSolution.user_id = resultSet.getInt("user_id");
-            solution.add(loadedSolution);
+            solutions.add(getSolutionFromResultSet(conn, resultSet));
         }
-        Solution[] uArray = new Solution[solution.size()];
-        uArray = solution.toArray(uArray);
-        return uArray;
+        return solutions;
     }
 
-    static public Solution[] loadAllByExerciseId(Connection conn, int id) throws SQLException {
-        ArrayList<Solution> solution = new ArrayList<Solution>();
-        String sql = "SELECT * FROM solution WHERE exercise_id=? order by created";
+    static public List<Solution> loadAllByExerciseId(Connection conn, int exercise_id) throws SQLException {
+        List<Solution> solutions = new ArrayList<Solution>();
+        String sql = "SELECT * FROM solutions WHERE exercise_id=? order by created";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
-        preparedStatement.setInt(1, id);
+        preparedStatement.setInt(1, exercise_id);
         ResultSet resultSet = preparedStatement.executeQuery();
         while (resultSet.next()) {
-            Solution loadedSolution = new Solution();
-            loadedSolution.id = resultSet.getInt("id");
-            loadedSolution.created = resultSet.getTimestamp("created");
-            loadedSolution.updated = resultSet.getTimestamp("updated");
-            loadedSolution.description = resultSet.getString("description");
-            loadedSolution.exercise_id = resultSet.getInt("exercise_id");
-            loadedSolution.user_id = resultSet.getInt("users_id");
-            solution.add(loadedSolution);
+            solutions.add(getSolutionFromResultSet(conn, resultSet));
         }
-        Solution[] uArray = new Solution[solution.size()];
-        uArray = solution.toArray(uArray);
-        return uArray;
+        return solutions;
+    }
+
+    private static Solution getSolutionFromResultSet(Connection conn, ResultSet resultSet) throws SQLException {
+        Solution loadedSolution = new Solution();
+        loadedSolution.id = resultSet.getInt("id");
+        loadedSolution.created = resultSet.getTimestamp("created");
+        loadedSolution.updated = resultSet.getTimestamp("updated");
+        loadedSolution.description = resultSet.getString("description");
+        loadedSolution.exercise = Exercise.loadExerciseById(conn, resultSet.getInt("exercise_id"));
+        loadedSolution.user = User.loadUserById(conn, resultSet.getInt("user_id"));
+        return loadedSolution;
     }
 
     @Override
@@ -191,8 +169,8 @@ public class Solution {
                 ", created=" + created +
                 ", updated=" + updated +
                 ", description='" + description + '\'' +
-                ", exercise_id=" + exercise_id +
-                ", user_id=" + user_id +
+                ", exercise=" + exercise.toString() +
+                ", user=" + user.toString() +
                 '}';
     }
 }
