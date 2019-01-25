@@ -106,7 +106,7 @@ public class Solution {
         return null;
     }
 
-    static public List<Solution> loadAllsolutions(Connection conn) throws SQLException {
+    static public List<Solution> loadAllSolutions(Connection conn) throws SQLException {
         List<Solution> solutions = new ArrayList<>();
         String sql = "SELECT * FROM solutions";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -117,7 +117,7 @@ public class Solution {
         return solutions;
     }
 
-    static public List<Solution> loadAllsolutions(Connection conn, int numberSolutions) throws SQLException {
+    static public List<Solution> loadAllSolutions(Connection conn, int numberSolutions) throws SQLException {
         List<Solution> solutions = new ArrayList<>();
         String sql = "SELECT * FROM solutions ORDER BY created DESC LIMIT ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
@@ -140,7 +140,7 @@ public class Solution {
     }
 
     static public List<Solution> loadAllByUserId(Connection conn, int userId) throws SQLException {
-        List<Solution> solutions = new ArrayList<Solution>();
+        List<Solution> solutions = new ArrayList<>();
         String sql = "SELECT * FROM solutions WHERE user_id=?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, userId);
@@ -152,7 +152,7 @@ public class Solution {
     }
 
     static public List<Solution> loadAllByExerciseId(Connection conn, int exerciseId) throws SQLException {
-        List<Solution> solutions = new ArrayList<Solution>();
+        List<Solution> solutions = new ArrayList<>();
         String sql = "SELECT * FROM solutions WHERE exercise_id=? order by created";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
         preparedStatement.setInt(1, exerciseId);
