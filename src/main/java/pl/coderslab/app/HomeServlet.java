@@ -24,7 +24,7 @@ public class HomeServlet extends HttpServlet {
         try (Connection conn = DbUtil.getConn()) {
             List<Solution> solutions = Solution.loadAllSolutions(conn, numberSolutions);
             request.setAttribute("solutions", solutions);
-            getServletContext().getRequestDispatcher("/tableSolution.jsp")
+            getServletContext().getRequestDispatcher("/solutionsList.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
