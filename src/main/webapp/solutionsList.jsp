@@ -8,7 +8,7 @@
 </head>
 <body>
 <%@include file="fragments/header.jsp" %>
-<c:if test="${ solutions == null}">
+<c:if test="${ solutions == null || empty solutions}">
     <h3>Brak rozwiązań</h3>
 </c:if>
 <c:if test="${not empty solutions}">
@@ -30,13 +30,12 @@
                 <td>${solution.exercise.title}</td>
                 <td>${solution.user.username}</td>
                 <td>${solution.created}</td>
-                <td><a href="">Szczegóły</a></td>
+                <td><a href="/ExerciseSolutionServlet?solutionId=${solution.id}">Szczegóły</a></td>
             </tr>
         </c:forEach>
         </tbody>
     </table>
 </c:if>
 <%@include file="fragments/footer.jsp" %>
-
 </body>
 </html>

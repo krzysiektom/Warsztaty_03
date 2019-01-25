@@ -21,7 +21,7 @@
 <a>Nazwa użytkownika: </a> <b>${user.username}</b><br>
 <a>Email: ${user.email}</a>
 
-<c:if test="${solutions == null}">
+<c:if test="${solutions == null || empty solutions}">
     <h3>Brak rozwiązań</h3>
 </c:if>
 <c:if test="${not empty solutions}">
@@ -41,7 +41,7 @@
                 <th scope="row">${count.count}</th>
                 <td>${solution.exercise.title}</td>
                 <td>${solution.created}</td>
-                <td><a href="/UserServlet?userId=${user.id}">Szczegóły</a></td>
+                <td><a href="/ExerciseSolutionServlet?solutionId=${solution.id}">Szczegóły</a></td>
             </tr>
         </c:forEach>
         </tbody>

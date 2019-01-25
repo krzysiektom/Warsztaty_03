@@ -15,7 +15,7 @@
 </head>
 <body>
 <%@include file="fragments/header.jsp" %>
-<c:if test="${ userGroups == null}">
+<c:if test="${ userGroups == null || empty userGroups}">
     <h3>Brak grup</h3>
 </c:if>
 <c:if test="${not empty userGroups}">

@@ -7,7 +7,7 @@
 <body>
 <%@include file="fragments/header.jsp" %>
 <h2>Lista użytkowników grupy: ${userGroup.name}</h2>
-<c:if test="${users == null}">
+<c:if test="${users == null || empty users}">
     <h3>Brak użytkowników</h3>
 </c:if>
 <c:if test="${not empty users}">
