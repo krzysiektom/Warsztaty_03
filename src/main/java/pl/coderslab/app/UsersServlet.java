@@ -41,7 +41,7 @@ public class UsersServlet extends HttpServlet {
                 }
                /* if (NotNullAndNotEmpty(groupId)) {
                     user.setUserGroup(UserGroup.loadUserGroupById(conn, Integer.parseInt(groupId)));
-                }*/
+                }*/ //"TODO" wbieranie grupy
                 user.saveToDB(conn);
             }
             doGet(request, response);

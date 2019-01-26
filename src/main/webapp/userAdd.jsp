@@ -26,7 +26,7 @@
         <br>
         <label for="password" class="col-sm-2 col-form-label">Hasło:</label>
         <input type="text" class="form-group mx-sm-3 mb-2" id="password" placeholder="Wprowadź hasło" name="password">
-        <%--<br>
+        <%--<br>"TODO" wbieranie grupy
         <label class="col-sm-2 col-form-label" for="select">Grupa</label>
         <select class="select-group mx-sm-3 mb-2" id="select">
             <option selected name="groupId">Wybierz grupę</option>
