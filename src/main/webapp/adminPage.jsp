@@ -12,7 +12,9 @@
 </head>
 <body>
 <%@include file="fragments/header.jsp" %>
-<a href="/GroupsServlet">Zarządzanie grupami użytkowników</a>
+<a href="/GroupsServlet">Zarządzanie grupami</a><br>
+<a href="/GroupsServlet">Zarządzanie użytkownikami</a><br>
+<a href="/GroupsServlet">Zarządzanie <zadaniami></zadaniami></a>
 <%@include file="fragments/footer.jsp" %>
 </body>
 </html>

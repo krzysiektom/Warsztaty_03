@@ -1,6 +1,5 @@
 package pl.coderslab.app;
 
-import pl.coderslab.model.Solution;
 import pl.coderslab.model.UserGroup;
 import pl.coderslab.utils.DbUtil;
 
