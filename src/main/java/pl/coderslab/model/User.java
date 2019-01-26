@@ -1,6 +1,6 @@
 package pl.coderslab.model;
 
-import org.mindrot.jbcrypt.BCrypt;
+import pl.coderslab.utils.BCrypt;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,13 +16,25 @@ public class User {
     private String password;
     private UserGroup userGroup;
 
+    public User() {
+    }
+
+    public User(String username, String email) {
+        this.username = username;
+        this.email = email;
+    }
+
     public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
     }
 
-    public User() {
+    public User(String username, String email, String password, UserGroup userGroup) {
+        this.username = username;
+        this.email = email;
+        this.password = password;
+        this.userGroup = userGroup;
     }
 
     public long getId() {

@@ -25,7 +25,7 @@ public class ExerciseSolutionServlet extends HttpServlet {
         try (Connection conn = DbUtil.getConn()) {
             Solution solution=Solution.loadSolutionById(conn,solutionId);
             request.setAttribute("solution",solution);
-            getServletContext().getRequestDispatcher("/solutionPage.jsp")
+            getServletContext().getRequestDispatcher("/solutionDetailsPage.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");

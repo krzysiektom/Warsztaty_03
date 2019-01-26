@@ -19,10 +19,14 @@ public class GroupsServlet extends HttpServlet {
         String groupId = request.getParameter("groupId");
         String name = request.getParameter("name");
         try (Connection conn = DbUtil.getConn()) {
-            if (groupId == null) {
-                new UserGroup(0, name).saveToDB(conn);
-            } else {
-                new UserGroup(Integer.parseInt(groupId), name).saveToDB(conn);
+            if (NotNullAndNotEmpty(name)) {
+                if (groupId == null) {
+                    new UserGroup(name).saveToDB(conn);
+                } else {
+                    UserGroup userGroup = UserGroup.loadUserGroupById(conn, Integer.parseInt(groupId));
+                    userGroup.setName(name);
+                    userGroup.saveToDB(conn);
+                }
             }
             doGet(request, response);
         } catch (SQLException e) {
@@ -40,11 +44,18 @@ public class GroupsServlet extends HttpServlet {
             }
             List<UserGroup> userGroups = UserGroup.loadAllUserGroups(conn);
             request.setAttribute("userGroups", userGroups);
-            getServletContext().getRequestDispatcher("/groupPage.jsp")
+            getServletContext().getRequestDispatcher("/groupsPage.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
             return;
+        }
+    }
+    private static boolean NotNullAndNotEmpty(String string){
+        if (string != "" && string != null){
+            return  true;
+        }else {
+            return false;
         }
     }
 }
