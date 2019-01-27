@@ -28,14 +28,14 @@
         <br>
         <label for="password" class="col-sm-2 col-form-label">Hasło:</label>
         <input type="text" class="form-group mx-sm-3 mb-2" id="password" name="password" value="${param.password}">
-        <%--<br> "TODO" wbieranie grupy
+        <br>
         <label class="col-sm-2 col-form-label" for="select">Grupa</label>
-        <select class="select-group mx-sm-3 mb-2" id="select">
-            <option selected name="groupId">Wybierz grupę</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>--%>
+        <select class="select-group mx-sm-3 mb-2" id="select" name="userGroupId">
+            <option selected value="${param.groupId}">${param.groupName}</option>
+            <c:forEach var="userGroup" items="${userGroups}">
+                <option value=${userGroup.id}>${userGroup.name}</option>
+            </c:forEach>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>

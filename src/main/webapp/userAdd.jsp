@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
 <head>
     <title>Dodawanie użytkownika</title>
@@ -26,14 +28,14 @@
         <br>
         <label for="password" class="col-sm-2 col-form-label">Hasło:</label>
         <input type="text" class="form-group mx-sm-3 mb-2" id="password" placeholder="Wprowadź hasło" name="password">
-        <%--<br>"TODO" wbieranie grupy
+        <br>
         <label class="col-sm-2 col-form-label" for="select">Grupa</label>
-        <select class="select-group mx-sm-3 mb-2" id="select">
-            <option selected name="groupId">Wybierz grupę</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-        </select>--%>
+        <select class="select-group mx-sm-3 mb-2" id="select" name="userGroupId">
+            <option selected>Wybierz grupę</option>
+            <c:forEach var="userGroup" items="${userGroups}">
+                <option value=${userGroup.id}>${userGroup.name}</option>
+            </c:forEach>
+        </select>
     </div>
     <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>

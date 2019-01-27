@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,12 +22,12 @@ public class UsersServlet extends HttpServlet {
         String username = request.getParameter("username");
         String email = request.getParameter("email");
         String password = request.getParameter("password");
-        String groupId = request.getParameter("groupId");
+        String userGroupId = request.getParameter("userGroupId");
         try (Connection conn = DbUtil.getConn()) {
             if (userId == null) {
                 User user = new User(username, email);
                 user.setPassword(password);
-                user.setUserGroup(UserGroup.loadUserGroupById(conn, 1));
+                user.setUserGroup(UserGroup.loadUserGroupById(conn, Integer.parseInt(userGroupId)));
                 user.saveToDB(conn);
             } else {
                 User user = User.loadUserById(conn, Integer.parseInt(userId));
@@ -39,9 +40,9 @@ public class UsersServlet extends HttpServlet {
                 if (NotNullAndNotEmpty(password) && !password.equals(user.getPassword())) {
                     user.setPassword(password);
                 }
-               /* if (NotNullAndNotEmpty(groupId)) {
-                    user.setUserGroup(UserGroup.loadUserGroupById(conn, Integer.parseInt(groupId)));
-                }*/ //"TODO" wbieranie grupy
+                if (NotNullAndNotEmpty(userGroupId)) {
+                    user.setUserGroup(UserGroup.loadUserGroupById(conn, Integer.parseInt(userGroupId)));
+                }
                 user.saveToDB(conn);
             }
             doGet(request, response);
@@ -61,7 +62,8 @@ public class UsersServlet extends HttpServlet {
             List<User> users = User.loadAllUsers(conn);
             request.setAttribute("users", users);
             List<UserGroup> userGroups = UserGroup.loadAllUserGroups(conn);
-            request.setAttribute("userGroups", userGroups);
+            HttpSession session = request.getSession();
+            session.setAttribute("userGroups", userGroups);
             getServletContext().getRequestDispatcher("/usersPage.jsp")
                     .forward(request, response);
         } catch (SQLException e) {

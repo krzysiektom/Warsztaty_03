@@ -28,6 +28,8 @@
         <tr class="table-active">
             <th scope="col">#</th>
             <th scope="col">Imię i nazwisko</th>
+            <th scope="col">Email</th>
+            <th scope="col">Grupa</th>
             <th scope="col">Akcje</th>
         </tr>
         </thead>
@@ -36,8 +38,10 @@
             <tr>
                 <th scope="row">${count.count}</th>
                 <td>${user.username}</td>
+                <td>${user.email}</td>
+                <td>${user.userGroup.name}</td>
                 <td>
-                    <a href="userEdit.jsp?userId=${user.id}&username=${user.username}&email=${user.email}&password=${user.password}&groupId=${user.userGroup.id}">Edytuj</a>
+                    <a href="userEdit.jsp?userId=${user.id}&username=${user.username}&email=${user.email}&password=${user.password}&groupId=${user.userGroup.id}&groupName=${user.userGroup.name}">Edytuj</a>
                     <a href="/UsersServlet?userId=${user.id}">Usuń</a>
                 </td>
             </tr>
