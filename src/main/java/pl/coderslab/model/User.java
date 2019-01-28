@@ -19,15 +19,10 @@ public class User {
     public User() {
     }
 
-    public User(String username, String email) {
-        this.username = username;
-        this.email = email;
-    }
-
     public User(String username, String email, String password, UserGroup userGroup) {
         this.username = username;
         this.email = email;
-        this.password = password;
+        this.setPassword(password);
         this.userGroup = userGroup;
     }
 

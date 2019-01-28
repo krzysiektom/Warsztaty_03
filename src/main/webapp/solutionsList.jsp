@@ -12,7 +12,7 @@
     <h3>Brak rozwiązań</h3>
 </c:if>
 <c:if test="${not empty solutions}">
-    <h2>Ostatnie rozwiązania</h2>
+    <h2>Ostatnio dodane rozwiązania:</h2>
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="table-active">

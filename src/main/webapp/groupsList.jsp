@@ -19,7 +19,7 @@
     <h3>Brak grup</h3>
 </c:if>
 <c:if test="${not empty userGroups}">
-    <h2>List grup:</h2>
+    <h2>Lista grup:</h2>
     <table class="table table-striped table-bordered">
         <thead>
         <tr class="table-active">

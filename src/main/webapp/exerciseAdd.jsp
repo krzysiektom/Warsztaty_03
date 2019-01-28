@@ -21,7 +21,7 @@
         <input type="text" class="form-group mx-sm-3 mb-2" id="title" placeholder="Wprowadź nazwę zadania" name="title">
         <br>
         <label for="description">Wprowadź opis zadania:</label>
-        <input  class="form-group mx-sm-3 mb-2" id="description" placeholder="Wprowadź opis zadania" name="description">
+        <textarea class="form-group mx-sm-3 mb-2" id="description" rows="5" cols="70" placeholder="Wprowadź opis zadania" name="description"></textarea>
     </div>
     <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>

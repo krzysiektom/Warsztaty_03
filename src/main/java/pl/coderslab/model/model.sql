@@ -11,13 +11,13 @@ CREATE TABLE users(
                     username VARCHAR(255) NOT NULL,
                     email VARCHAR(255) NOT NULL UNIQUE,
                     password VARCHAR(255),
-                    usergroup_id INT NOT NULL,
+                    usergroup_id INT,
                     FOREIGN KEY (usergroup_id) REFERENCES userGroups(id)
 );
 CREATE TABLE exercises(
                        id INT auto_increment PRIMARY KEY,
                        title VARCHAR(255),
-                       description TEXT
+                       description TEXT NOT NULL
 );
 CREATE TABLE solutions(
                        id INT auto_increment PRIMARY KEY,

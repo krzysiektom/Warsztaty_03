@@ -47,14 +47,16 @@ public class GroupsServlet extends HttpServlet {
             getServletContext().getRequestDispatcher("/groupsPage.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
-            response.getWriter().append("Brak połączenia z bazą danych");
+            response.getWriter().append(String.valueOf(e.getErrorCode()) + " ");
+            response.getWriter().append("W usuwanej grupie są jeszcze użytkownicy");
             return;
         }
     }
-    private static boolean NotNullAndNotEmpty(String string){
-        if (string != "" && string != null){
-            return  true;
-        }else {
+
+    private static boolean NotNullAndNotEmpty(String string) {
+        if (string != "" && string != null) {
+            return true;
+        } else {
             return false;
         }
     }

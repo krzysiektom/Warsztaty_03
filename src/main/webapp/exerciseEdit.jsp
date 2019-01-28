@@ -22,7 +22,8 @@
         <input type="text" class="form-group mx-sm-3 mb-2" id="title" name="title" value="${param.title}">
         <br>
         <label for="text" class="col-sm-2 col-form-label">Opis zadania:</label>
-        <input type="text" class="form-group mx-sm-3 mb-2" id="text" name="description" value="${param.description}">
+        <textarea type="text" class="form-group mx-sm-3 mb-2" id="text" name="description" rows="5"
+                  cols="70">${param.description}</textarea>
     </div>
     <button type="submit" class="btn btn-primary">Zapisz</button>
 </form>
