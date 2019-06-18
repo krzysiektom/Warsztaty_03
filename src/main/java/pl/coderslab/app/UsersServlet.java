@@ -25,7 +25,7 @@ public class UsersServlet extends HttpServlet {
         String userGroupId = request.getParameter("userGroupId");
         try (Connection conn = DbUtil.getConn()) {
             if (userId == null) {
-                User user = new User(username, email,password,UserGroup.loadUserGroupById(conn, Integer.parseInt(userGroupId)));
+                User user = new User(username, email, password, UserGroup.loadUserGroupById(conn, Integer.parseInt(userGroupId)));
                 user.saveToDB(conn);
             } else {
                 User user = User.loadUserById(conn, Integer.parseInt(userId));
@@ -47,7 +47,6 @@ public class UsersServlet extends HttpServlet {
         } catch (SQLException e) {
             response.getWriter().append(String.valueOf(e.getErrorCode()) + " ");
             response.getWriter().append("Użytkownik o takim mailu już istnieje");
-            return;
         }
     }
 
@@ -67,15 +66,10 @@ public class UsersServlet extends HttpServlet {
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 
     private static boolean NotNullAndNotEmpty(String string) {
-        if (string != "" && string != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return string != null && !string.equals("");
     }
 }

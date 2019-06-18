@@ -15,10 +15,6 @@ import java.util.List;
 
 @WebServlet("/")
 public class HomeServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int numberSolutions = Integer.parseInt(getServletContext().getInitParameter("number-solutions"));
         try (Connection conn = DbUtil.getConn()) {
@@ -28,7 +24,6 @@ public class HomeServlet extends HttpServlet {
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 }

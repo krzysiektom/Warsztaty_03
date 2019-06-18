@@ -1,7 +1,6 @@
 package pl.coderslab.app;
 
 import pl.coderslab.model.Exercise;
-import pl.coderslab.model.UserGroup;
 import pl.coderslab.utils.DbUtil;
 
 import javax.servlet.ServletException;
@@ -26,7 +25,7 @@ public class ExercisesServlet extends HttpServlet {
                 if (exerciseId == null) {
                     new Exercise(title, description).saveToDB(conn);
                 } else {
-                    Exercise exercise= Exercise.loadExerciseById(conn, Integer.parseInt(exerciseId));
+                    Exercise exercise = Exercise.loadExerciseById(conn, Integer.parseInt(exerciseId));
                     exercise.setTitle(title);
                     exercise.setDescription(description);
                     exercise.saveToDB(conn);
@@ -35,7 +34,6 @@ public class ExercisesServlet extends HttpServlet {
             doGet(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 
@@ -52,15 +50,10 @@ public class ExercisesServlet extends HttpServlet {
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 
     private static boolean NotNullAndNotEmpty(String string) {
-        if (string != "" && string != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return string != null && !string.equals("");
     }
 }

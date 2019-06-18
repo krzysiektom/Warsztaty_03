@@ -16,22 +16,17 @@ import java.util.List;
 
 @WebServlet("/GroupUserServlet")
 public class GroupUsersServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         int groupId = Integer.parseInt(request.getParameter("groupId"));
         try (Connection conn = DbUtil.getConn()) {
-            UserGroup userGroup = UserGroup.loadUserGroupById(conn,groupId);
-            request.setAttribute("userGroup",userGroup);
-            List<User> users =User.loadAllByGroupId (conn,groupId);
+            UserGroup userGroup = UserGroup.loadUserGroupById(conn, groupId);
+            request.setAttribute("userGroup", userGroup);
+            List<User> users = User.loadAllByGroupId(conn, groupId);
             request.setAttribute("users", users);
             getServletContext().getRequestDispatcher("/usersList.jsp")
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
 
     }

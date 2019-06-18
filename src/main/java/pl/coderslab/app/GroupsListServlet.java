@@ -15,10 +15,6 @@ import java.util.List;
 
 @WebServlet("/GroupServlet")
 public class GroupsListServlet extends HttpServlet {
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-    }
-
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try (Connection conn = DbUtil.getConn()) {
             List<UserGroup> userGroups = UserGroup.loadAllUserGroups(conn);
@@ -27,7 +23,6 @@ public class GroupsListServlet extends HttpServlet {
                     .forward(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 }

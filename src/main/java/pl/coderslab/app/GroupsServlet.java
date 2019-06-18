@@ -31,7 +31,6 @@ public class GroupsServlet extends HttpServlet {
             doGet(request, response);
         } catch (SQLException e) {
             response.getWriter().append("Brak połączenia z bazą danych");
-            return;
         }
     }
 
@@ -49,15 +48,10 @@ public class GroupsServlet extends HttpServlet {
         } catch (SQLException e) {
             response.getWriter().append(String.valueOf(e.getErrorCode()) + " ");
             response.getWriter().append("W usuwanej grupie są jeszcze użytkownicy");
-            return;
         }
     }
 
     private static boolean NotNullAndNotEmpty(String string) {
-        if (string != "" && string != null) {
-            return true;
-        } else {
-            return false;
-        }
+        return string != null && !string.equals("");
     }
 }
